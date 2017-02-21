@@ -10,7 +10,7 @@ $wsdl = "http://localhost/sigc11appws/servidor.php?wsdl";
 $client = new nusoap_client($wsdl, 'wsdl');
 
 $myResultado = $client->call('loginUser', array('usuario' => 'alexis', 'clave' => 'alexis25'));
-//$mynewUsuario = $client->call('newUser', array('nControl'=>'12345', 'usuario'=>'sebast', 'clave'=>'1q2w3e4r5t'));
+$mynewUsuario = $client->call('newUser', array('nControl' => '', 'usuario' => '', 'clave' => ''));
 $myEmpresa = $client->call('getEmpresas', array('empresa' => ''));
 $myNisDetails = $client->call('getNisDetails', array('nombre' => '', 'solNis' => '', 'cable' => '', 'fase' => '', 'tipoRed' => ''));
 

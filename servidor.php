@@ -55,8 +55,8 @@ function newUser($nControl, $usuario, $clave)
 
     }
 
-    $resultado = $mysqli->query("INSERT INTO usuarios VALUES ('', '$nControl', '$usuario', '$clave')");
-    $resultado->close();
+    $resultado = $mysqli->query("INSERT INTO usuarios(id_usuario, nControl, usuario, password)
+    VALUES ('',$nControl,$usuario,$clave)");
 }
 
 //*********************Función para obtener los registros de los concecionarios********************//
