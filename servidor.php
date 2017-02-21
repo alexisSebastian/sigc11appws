@@ -19,6 +19,9 @@ $server->register('newUser', array('nControl' => 'xsd:int', 'usuario' => 'xsd:st
 
 $server->register('getEmpresas', array('empresa' => 'string'), array('return' => 'xsd:string'), $ns);
 
+$server->register('getDetailNis', array('consesionario' => 'string', 'solNis' => 'int'
+, 'cable' => 'int', 'fase' => 'string', 'tipoRed' => 'string'));
+
 //********************Funcion para crear el login del usuario*************************//
 function loginUser($usuario, $clave)
 {
@@ -78,7 +81,8 @@ function getEmpresas($empresa)
     $resultado->close();
 }
 
-function getDetailNis()
+//******************************Función para obtener registro detallado de las solicitudes******************//
+function getNisDetails($nombre, $solNis, $cable, $fase, $tipoRed)
 {
     $mysqli = new mysqli('localhost', 'root', '', 'dbcompinfra');
     if ($mysqli->connect_errno) {
@@ -86,17 +90,16 @@ function getDetailNis()
 
     }
 
-    $resultado = $mysqli->query("select nombre as concesionario,num_solicitud_nis 
-    as Solicitud_NIS, cable_instalar, fase, tipoRedDescripcion 
-    as Tipo_Red from solicitud as sol inner join concesionario 
-    as cs on sol.idConcesionario = cs.id inner join tipored as tr on sol.idtipored = tr.idtipoRed
-");
+    $resultado = $mysqli->query("select nombre,num_solicitud_nis, cable_instalar, fase, tipoRedDescripcion 
+    from solicitud as sol inner join concesionario as cs on sol.idConcesionario = cs.id 
+    inner join tipored as tr on sol.idtipored = tr.idtipoRed");
 
     while ($fila = mysqli_fetch_array($resultado)) {
-        $empresaArray [] = array('nombre' => $fila[1]);
+        $detailArray [] = array('nombre' => $fila[0], 'num_solicitud_nis' => $fila[1], 'cable_instalar' => $fila[2],
+            'fase' => $fila[3], 'tipoRedDescripcion' => $fila[4]);
     }
 
-    $arrayJson = json_encode($empresaArray);
+    $arrayJson = json_encode($detailArray);
 
     return new soapval('return', 'xsd:string', $arrayJson);
 
