@@ -20,7 +20,7 @@ $server->register('newUser', array('nControl' => 'xsd:int', 'usuario' => 'xsd:st
 $server->register('getEmpresas', array('empresa' => 'string'), array('return' => 'xsd:string'), $ns);
 
 $server->register('getDetailNis', array('consesionario' => 'string', 'solNis' => 'int'
-, 'cable' => 'int', 'fase' => 'string', 'tipoRed' => 'string'));
+, 'cable' => 'string', 'fase' => 'string', 'tipoRed' => 'string'));
 
 //********************Funcion para crear el login del usuario*************************//
 function loginUser($usuario, $clave)
@@ -55,7 +55,7 @@ function newUser($nControl, $usuario, $clave)
 
     }
 
-    $resultado = $mysqli->query("INSERT INTO usuarios (nControl, usuario, password) VALUES ('', '$nControl', '$usuario', '$clave')");
+    $resultado = $mysqli->query("INSERT INTO usuarios VALUES ('', '$nControl', '$usuario', '$clave')");
     $resultado->close();
 }
 
