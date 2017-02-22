@@ -8,7 +8,7 @@
 include_once("lib/nusoap.php");
 $ns = "http://localhost/sigc11appws/";
 $server = new soap_server();
-$server->configureWSDL('WsSIG11APP', $ns);
+$server->configureWSDL('SIG11APPWS', $ns);
 $server->wsdl->schemaTargetNamespace = $ns;
 
 //********************Se registra el menú*****************//
@@ -21,6 +21,7 @@ $server->register('getEmpresas', array('empresa' => 'string'), array('return' =>
 
 $server->register('getDetailNis', array('consesionario' => 'string', 'solNis' => 'int'
 , 'cable' => 'string', 'fase' => 'string', 'tipoRed' => 'string'));
+
 
 //********************Funcion para crear el login del usuario*************************//
 function loginUser($usuario, $clave)
@@ -46,7 +47,7 @@ function loginUser($usuario, $clave)
 
 
 //********************Funcion para agregar Usuarios*****************//
-function newUser($nControl, $usuario, $clave)
+function newUser($nCont, $usuario, $clave)
 {
     $mysqli = new mysqli('localhost', 'root', '', 'users_sigc');
 
@@ -56,7 +57,7 @@ function newUser($nControl, $usuario, $clave)
     }
 
     $resultado = $mysqli->query("INSERT INTO usuarios(id_usuario, nControl, usuario, password)
-    VALUES ('',$nControl,$usuario,$clave)");
+    VALUES ('','$nCont','$usuario','$clave')");
 }
 
 //*********************Función para obtener los registros de los concecionarios********************//
