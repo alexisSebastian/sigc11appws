@@ -12,7 +12,7 @@ $client = new nusoap_client($wsdl, 'wsdl');
 $myResultado = $client->call('loginUser', array('usuario' => '', 'clave' => ''));
 //$mynewUsuario = $client->call('newUser', array('nControl' => '', 'usuario' => '', 'clave' => ''));
 $myEmpresa = $client->call('getEmpresas', array('empresa' => ''));
-$myNisDetails = $client->call('getNisDetails', array('nombre' => '', 'solNis' => '', 'cable' => '', 'fase' => '', 'tipoRed' => ''));
+$myNisDetails = $client->call('getNisDetails', array('concesionario' => '', 'solNis' => '', 'cable' => '', 'fase' => '', 'tipoRed' => ''));
 
 echo "Resultado: " . $myResultado;
 
@@ -22,7 +22,7 @@ echo "<br>";
 
 echo "<br>";
 
-echo "Empresas: " . $myEmpresa;
+echo $myEmpresa;
 
 echo "<br><br>";
 

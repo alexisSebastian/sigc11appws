@@ -61,7 +61,7 @@ function newUser($nCont, $usuario, $clave)
 }
 
 //*********************Función para obtener los registros de los concecionarios********************//
-function getEmpresas($empresa)
+function getEmpresas($emprsa)
 {
     $mysqli = new mysqli('localhost', 'root', '', 'dbcompinfra');
     if ($mysqli->connect_errno) {
@@ -83,7 +83,7 @@ function getEmpresas($empresa)
 }
 
 //******************************Función para obtener registro detallado de las solicitudes******************//
-function getNisDetails($nombre, $solNis, $cable, $fase, $tipoRed)
+function getNisDetails($concesionario, $solNis, $cable, $fase, $tipoRed)
 {
     $mysqli = new mysqli('localhost', 'root', '', 'dbcompinfra');
     if ($mysqli->connect_errno) {
@@ -91,20 +91,22 @@ function getNisDetails($nombre, $solNis, $cable, $fase, $tipoRed)
 
     }
 
-    $resultado = $mysqli->query("select nombre,num_solicitud_nis, cable_instalar, fase, tipoRedDescripcion 
-    from solicitud as sol inner join concesionario as cs on sol.idConcesionario = cs.id 
-    inner join tipored as tr on sol.idtipored = tr.idtipoRed");
+    $resultado = $mysqli->query("select nombre  as concesionario,num_solicitud_nis as Solicitud_NIS, cable_instalar, fase, tipoRedDescripcion  as Tipo_Red
+from solicitud as sol
+inner join concesionario as cs on sol.idConcesionario = cs.id
+inner join tipored as tr on sol.idtipored = tr.idtipoRed");
 
-    while ($fila = mysqli_fetch_array($resultado)) {
-        $detailArray [] = array('nombre' => $fila[0], 'num_solicitud_nis' => $fila[1], 'cable_instalar' => $fila[2],
-            'fase' => $fila[3], 'tipoRedDescripcion' => $fila[4]);
+    while ($fila = mysqli_fetch_assoc($resultado)) {
+        $detalleArray [] = array('concesionario' => $fila[0], 'Solicitud_NIS' => $fila [1], 'cable_instalar' => $fila[2]
+        , 'fase' => [3], 'Tipo_Red' => [4]);
     }
 
-    $arrayJson = json_encode($detailArray);
+    $arrayJson = json_encode($detalleArray);
 
     return new soapval('return', 'xsd:string', $arrayJson);
 
     $resultado->close();
+
 }
 
 if (!isset($HTTP_RAW_POST_DATA))
