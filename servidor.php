@@ -17,10 +17,7 @@ $server->register('loginUser', array('usuario' => 'xsd:string', 'clave' => 'xsd:
 $server->register('newUser', array('nControl' => 'xsd:int', 'usuario' => 'xsd:string', 'clave' => 'xsd:string'),
     array('return' => 'xsd:int'), $ns);
 
-$server->register('getEmpresas', array('empresa' => 'string'), array('return' => 'xsd:string'), $ns);
-
-$server->register('getDetailNis', array('consesionario' => 'string', 'solNis' => 'int'
-, 'cable' => 'string', 'fase' => 'string', 'tipoRed' => 'string'));
+$server->register('getEmpresa', array('empresa' => 'string'), array('return' => 'xsd:string'), $ns);
 
 
 //********************Funcion para crear el login del usuario*************************//
@@ -61,7 +58,7 @@ function newUser($nCont, $usuario, $clave)
 }
 
 //*********************Función para obtener los registros de los concecionarios********************//
-function getEmpresas($emprsa)
+function getEmpresa($empresa)
 {
     $mysqli = new mysqli('localhost', 'root', '', 'dbcompinfra');
     if ($mysqli->connect_errno) {
@@ -69,7 +66,7 @@ function getEmpresas($emprsa)
 
     }
 
-    $resultado = $mysqli->query("SELECT * FROM concesionario ORDER BY nombre");
+    $resultado = $mysqli->query("SELECT * FROM concesionario");
 
     while ($fila = mysqli_fetch_array($resultado)) {
         $empresaArray [] = array('nombre' => $fila[1]);
@@ -83,31 +80,6 @@ function getEmpresas($emprsa)
 }
 
 //******************************Función para obtener registro detallado de las solicitudes******************//
-function getNisDetails($concesionario, $solNis, $cable, $fase, $tipoRed)
-{
-    $mysqli = new mysqli('localhost', 'root', '', 'dbcompinfra');
-    if ($mysqli->connect_errno) {
-        die("Fallo la conexión" . $mysqli->mysqli_connect_errno() . ")" . $mysqli->mysqli_connect_errno());
-
-    }
-
-    $resultado = $mysqli->query("select nombre  as concesionario,num_solicitud_nis as Solicitud_NIS, cable_instalar, fase, tipoRedDescripcion  as Tipo_Red
-from solicitud as sol
-inner join concesionario as cs on sol.idConcesionario = cs.id
-inner join tipored as tr on sol.idtipored = tr.idtipoRed");
-
-    while ($fila = mysqli_fetch_assoc($resultado)) {
-        $detalleArray [] = array('concesionario' => $fila[0], 'Solicitud_NIS' => $fila [1], 'cable_instalar' => $fila[2]
-        , 'fase' => [3], 'Tipo_Red' => [4]);
-    }
-
-    $arrayJson = json_encode($detalleArray);
-
-    return new soapval('return', 'xsd:string', $arrayJson);
-
-    $resultado->close();
-
-}
 
 if (!isset($HTTP_RAW_POST_DATA))
     $HTTP_RAW_POST_DATA = file_get_contents('php://input');

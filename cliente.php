@@ -11,8 +11,7 @@ $client = new nusoap_client($wsdl, 'wsdl');
 
 $myResultado = $client->call('loginUser', array('usuario' => '', 'clave' => ''));
 //$mynewUsuario = $client->call('newUser', array('nControl' => '', 'usuario' => '', 'clave' => ''));
-$myEmpresa = $client->call('getEmpresas', array('empresa' => ''));
-$myNisDetails = $client->call('getNisDetails', array('concesionario' => '', 'solNis' => '', 'cable' => '', 'fase' => '', 'tipoRed' => ''));
+$myEmpresa = $client->call('getEmpresa', array('empresa' => ''));
 
 echo "Resultado: " . $myResultado;
 
@@ -26,7 +25,6 @@ echo $myEmpresa;
 
 echo "<br><br>";
 
-echo "Solicitud detallada: " . $myNisDetails;
 
 
 ?>
