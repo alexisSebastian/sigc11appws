@@ -13,6 +13,8 @@ $myResultado = $client->call('loginUser', array('usuario' => '', 'clave' => ''))
 //$mynewUsuario = $client->call('newUser', array('nControl' => '', 'usuario' => '', 'clave' => ''));
 $myEmpresa = $client->call('getEmpresa', array('empresa' => ''));
 
+$myDetalle = $client->call('getConDetail', array('solicitud' => ''));
+
 echo "Resultado: " . $myResultado;
 
 echo "<br>";
@@ -25,6 +27,6 @@ echo $myEmpresa;
 
 echo "<br><br>";
 
-
+echo $myDetalle;
 
 ?>

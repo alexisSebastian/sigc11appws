@@ -7,7 +7,7 @@
  */
 include_once("lib/nusoap.php");
 $ns = "http://localhost/sigc11appws/";
-$server = new soap_server();
+$server = new soap_server();  
 $server->configureWSDL('SIG11APPWS', $ns);
 $server->wsdl->schemaTargetNamespace = $ns;
 
@@ -18,6 +18,8 @@ $server->register('newUser', array('nControl' => 'xsd:int', 'usuario' => 'xsd:st
     array('return' => 'xsd:int'), $ns);
 
 $server->register('getEmpresa', array('empresa' => 'string'), array('return' => 'xsd:string'), $ns);
+
+$server->register('getConDetail', array('solicitud' => 'xsd:string'), array('return' => 'xsd:string'), $ns);
 
 
 //********************Funcion para crear el login del usuario*************************//
@@ -80,6 +82,28 @@ function getEmpresa($empresa)
 }
 
 //******************************Función para obtener registro detallado de las solicitudes******************//
+function getConDetail($solicitud)
+{
+    $mysqli = new mysqli('localhost', 'root', '', 'dbcompinfra');
+    if ($mysqli->connect_errno) {
+        die("Falló la conexión" . $mysqli->connect_errno() . ")" . $mysqli->connect_errno());
+    }
+
+    $resultado = $mysqli->query("SELECT * FROM concesionario_detalles ");
+
+    while ($fila = mysqli_fetch_array($resultado)) {
+        $detalles [] = array('concesionario' => $fila[0], 'Solicitud_NIS' => $fila[1], 'cable_instalar' => $fila[2], 'Tipo_Red' => $fila[4]);
+    }
+
+    $arrayJsonDetalle = json_encode($detalles);
+
+    return new soapval('return', 'xsd:string', $arrayJsonDetalle);
+
+    $resultado->close();
+}
+
+//si el item es igual al item mensaje de sin novedades, de lo contrario mensaje de actualizado
+
 
 if (!isset($HTTP_RAW_POST_DATA))
     $HTTP_RAW_POST_DATA = file_get_contents('php://input');
